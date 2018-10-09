@@ -1,2 +1,2 @@
 module InstantiateFromURL
-end 
+end
