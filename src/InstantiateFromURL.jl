@@ -1,10 +1,12 @@
 module InstantiateFromURL
 
-using Pkg
-import LibGit2
+# Deps 
+using Pkg, GitHub, HTTP, JSON
 
+# Code
 include("activate.jl")
 
+# Exports
 export activate
 
 end
