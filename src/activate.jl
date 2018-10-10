@@ -13,15 +13,14 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         tagslist = HTTP.get(HTTP.URI(tagsurl), ["User-Agent" => "ubcecon"], "post body data")
         tagsdata = JSON.parse(String(tagslist.body))
         # Iterate through tags 
-        for tag in tagsdata 
-            if "refs/tags/$tag" != tag["ref"]
-                continue 
-            else 
-                oursha = tag["object"]["sha"]
+        for remotetag in tagsdata 
+            if "refs/tags/$tag" == remotetag["ref"] 
+                oursha = remotetag[""object"]["sha"]
+                break 
             end 
         end
         # Throw error otherwise. 
-        @assert sha != nothing "Tag not found in list of tags."
+        @assert oursha != nothing "Tag not found in list of tags."
     else # Download master.
         oursha = branch(reponame, "master").commit.sha
     end 
