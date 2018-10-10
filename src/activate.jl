@@ -15,7 +15,7 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         # Iterate through tags 
         for remotetag in tagsdata 
             if "refs/tags/$tag" == remotetag["ref"] 
-                oursha = remotetag[""object"]["sha"]
+                oursha = remotetag["object"]["sha"]
                 break 
             end 
         end
@@ -27,7 +27,7 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
     # Turn this into a url. 
     oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
     # Download that url to projects and unzip. 
-    run(`curl -L $oururl -o $projdir/$oursha.tar.gz`)
-    run(`tar -xvzf $projdir/$oursha.tar.gz -C $projdir`)
-    run(`rm $projdir/$oursha.tar.gz`) # Remove all unzipped. 
+    run(gen_download_cmd(oururl, "$projdir/$oursha.tar.gz"))
+    mkdir("$projdir/$oursha")
+    run(gen_unpack_cmd("$projdir/$oursha.tar.gz", "$projdir/$oursha"))
 end 
