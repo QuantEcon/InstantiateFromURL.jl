@@ -3,7 +3,7 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         projdir = joinpath(DEPOT_PATH[1], ".projects") # DEPOT_PATH[1] is our .julia 
         mkpath(projdir) 
     # For each case of inputs, end up with a concrete URL to download. 
-    oursha = nothing 
+    oursha = "test" 
     if sha != nothing 
         @assert length(sha) == 40 # Check that it's a valid SHA1 hash. 
         oursha = sha 
@@ -15,8 +15,9 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         # Iterate through tags 
         for remotetag in tagsdata 
             if "refs/tags/$tag" == remotetag["ref"] 
+                # @show remotetag["object"]["sha"]
                 oursha = remotetag["object"]["sha"]
-                break 
+                break
             end 
         end
         # Throw error otherwise. 
