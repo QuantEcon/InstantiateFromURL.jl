@@ -1,7 +1,8 @@
-authors = ["Arnav Sood <soodarnav01@gmail.com>"]
 name = "InstantiateFromURL"
 uuid = "f04cf714-cbf6-11e8-0aee-efd32d09e63e"
+authors = ["Arnav Sood <soodarnav01@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+GitHub = "bc5e4493-9b4d-5f90-b8aa-2b2bcaad7a26"
 LibGit2 = "76f85450-5226-5b5a-8eaa-529ad045b433"
