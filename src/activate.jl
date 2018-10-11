@@ -16,7 +16,7 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
     oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
     # Download that url to projects and unzip. 
     run(gen_download_cmd(oururl, "$projdir/$oursha.tar.gz"))
-    mkdir("$projdir/$oursha")
+    mkpath("$projdir/$oursha")
     run(gen_unpack_cmd("$projdir/$oursha.tar.gz", "$projdir/$oursha"))
     # Remove the tarball. 
     rm("$projdir/$oursha.tar.gz")
