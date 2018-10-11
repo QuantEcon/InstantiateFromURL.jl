@@ -1,3 +1,3 @@
 using InstantiateFromURL, Test
 
-@testset begin include("expectations.jl") end 
+@testset begin include("qelp.jl") end # QuantEconLecturePackages
