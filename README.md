@@ -1,6 +1,6 @@
 # InstantiateFromURL
 
-A way to bind and version dependency information to Julia assets like scripts and Jupyter notebooks (i.e., without the need to pass around TOML files). 
+A way to bind dependency information to Julia assets without the need to pass around TOML files.
 
 Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944.
 
@@ -19,6 +19,6 @@ The TOML must (currently) be in a public repository.
 
 ## Considerations 
 
-* Notebook environments are perfectly reproducible, so long as you specify a static object for activation (a hash or tag). 
-* Notebooks can be moved around the local machine without consequence, and traded between machines. 
-* The only thing which determines the notebook's state is the notebook itself (through the TOML requirement). 
+* Asset environments are perfectly reproducible, so long as you specify a static object for activation (a hash or tag). 
+* Assets can be moved around the local machine without consequence, and traded between machines. 
+* The only thing which determines the asset's state is the notebook itself (through the TOML requirement). 
