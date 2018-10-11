@@ -1,6 +1,6 @@
 # InstantiateFromURL
 
-A way to bind (versioned) Julia TOML (Project/Manifest specifications) to Jupyter notebooks without constantly generating local files. Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944.
+A way to bind (versioned) Julia TOML (Project/Manifest specifications) to Julia scripts/Jupyter notebooks without constantly generating local files. Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944.
 
 ## Overview
 
