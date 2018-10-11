@@ -18,4 +18,6 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
     run(gen_download_cmd(oururl, "$projdir/$oursha.tar.gz"))
     mkdir("$projdir/$oursha")
     run(gen_unpack_cmd("$projdir/$oursha.tar.gz", "$projdir/$oursha"))
+    # Remove the tarball. 
+    rm("$projdir/$oursha.tar.gz")
 end 
