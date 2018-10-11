@@ -1,9 +1,7 @@
 module InstantiateFromURL
 
-# Deps 
-using Pkg, GitHub, HTTP, JSON
-using BinaryProvider # Important to instantiate the gen_ commands. 
-
+# Deps. `using BinaryProvider` needed to instantiate gen_ commands. 
+using Pkg, GitHub, HTTP, JSON, BinaryProvider 
 
 # Code
 include("activate.jl")
