@@ -1,3 +1,3 @@
 using InstantiateFromURL, Test, GitHub
 
-@testset begin include("qelp.jl") end # QuantEconLecturePackages
+@testset begin include("instest.jl") end # arnavs/InstantationTest
