@@ -30,11 +30,9 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         printstyled("Instantiating ", bold=true, color=:light_green); println("$projdir")
         pkg"instantiate" 
         pkg"precompile"
-        printstyled("Done ", bold=true, color=:light_green); println("$projdir")
     else 
         printstyled("Activating ", bold=true, color=:light_green); println("$projdir")
         Pkg.activate(ourdir)
-        printstyled("Done ", bold=true, color=:light_green); 
     end 
     # Return some objects. 
     (oursha, ourdir); 
