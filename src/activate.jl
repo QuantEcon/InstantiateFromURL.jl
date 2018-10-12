@@ -19,7 +19,7 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         if isdir(ourdir) && force == false 
             Pkg.activate(ourdir)
             pkg"instantiate" 
-            return 0 
+            return
         else
             # Do nothing. 
         end 
