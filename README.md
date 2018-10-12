@@ -19,3 +19,5 @@ All of the following are valid calls:
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
 The last command above would save to `pwd/.projects/QuantEcon/QuantEconLecturePackages-0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9/`, and likewise for the other commands (with the appropriate SHA1 hashes).
+
+:warning: There is a rate limit on the GitHub API that's bound to your IP address. It shouldn't impact all but the most heavy users, but it's something to note
