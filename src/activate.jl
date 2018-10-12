@@ -1,6 +1,6 @@
 function activate_github(reponame; version = nothing, sha = nothing, force = false)
     # Make sure that our .projects environment is kosher. 
-        projdir = joinpath(@__DIR__, ".projects") # DEPOT_PATH[1] is our .julia 
+        projdir = joinpath(pwd(), ".projects") # DEPOT_PATH[1] is our .julia 
         mkpath(projdir) 
     # For each case of inputs, end up with a concrete URL to download. 
     if sha != nothing 
