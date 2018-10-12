@@ -27,9 +27,8 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
             Pkg.activate(ourdir)
             pkg"instantiate" 
             pkg"precompile"
-            return 
+            return
+        else 
+            Pkg.activate(ourdir)
         end 
-    # Activation logic 
-        Pkg.activate(ourdir)
-        return 
 end 
