@@ -21,14 +21,17 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
         # Download that url to projects and unzip. 
         tarpath = joinpath(projdir, "$oursha.tar.gz")
+        printstyled("Downloading ", bold=true, color=:light_green); println("$reponame-$oursha → $projdir")
         run(gen_download_cmd(oururl, tarpath))
-        run(gen_unpack_cmd(tarpath, projdir)) # Will have package name. 
+        @suppress_out begin run(gen_unpack_cmd(tarpath, projdir)) end # Will have package name. 
         # Remove the tarball. 
         rm("$projdir/$oursha.tar.gz")
         Pkg.activate(ourdir)
+        printstyled("Instantiating ", bold=true, color=:light_green); println("$projdir")
         pkg"instantiate" 
         pkg"precompile"
     else 
+        printstyled("Activating ", bold=true, color=:light_green); println("$projdir")
         Pkg.activate(ourdir)
     end 
     # Return some objects. 
