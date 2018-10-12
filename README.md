@@ -10,10 +10,10 @@ Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://githu
 
 All of the following are valid calls:
 
-* `activate_github("arnavs/InstantiationTest")`
-* `activate_github("arnavs/InstantiationTest", version = "v0.1.0")`
-* `activate_github("arnavs/InstantiationTest", sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af57")`
+* `activate_github("QuantEcon/QuantEconLecturePackages")`
+* `activate_github("QuantEcon/QuantEconLecturePackages", version = "v0.1.0")`
+* `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9")`
 
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
-The last command above would save to `pwd/.projects/InstantiationTest-2d1291c4372c1d1a41f655292f60e1c5b8d5af57/`, and likewise for the other commands (with the appropriate SHA1 hashes).
+The last command above would save to `pwd/.projects/QuantEcon/QuantEconLecturePackages-0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9/`, and likewise for the other commands (with the appropriate SHA1 hashes).
