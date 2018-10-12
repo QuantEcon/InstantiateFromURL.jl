@@ -1,16 +1,35 @@
 
-reponame = "QuantEcon/QuantEconLecturePackages"
+reponame = "arnavs/InstantiationTest"
 version = "v0.1.0"
-sha = "12bd6847559b79d29bd9cdcd3d4e841bc90bc19f" # Arbitrary commit. 
+sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af57" # Arbitrary commit. 
 
+isdir(".projects") == false || rm(".projects", recursive = true) # Clean the environment before testing. 
 
+# Test master branch success and SHA. 
+@test activate_github(reponame)[1] == branch(reponame, "master").commit.sha 
 
-activate_github(reponame)
-activate_github(reponame, version = version)
-activate_github(reponame, version = version, sha = sha)
+# Test version 
+@test activate_github(reponame, version = version)[1] == tag(reponame, version).object["sha"]
 
-@test 1 == 1 # Will run if the above things don't break. 
-@test_throws ArgumentError activate_github(reponame, sha = "12bd6847559b79d29bd9cdcd3d4e841bc90bc19") # Wrong length. 
-@test_throws ErrorException activate_github(reponame, sha = "13bd6847559b79d29bd9cdcd3d4e841bc90bc19f") # Wrong SHA. 
+# Test sha 
+oursha, ourdir = activate_github(reponame, version = version, sha = sha)
+@test oursha == sha 
+
+# Test activated environment 
+@test Base.active_project() == joinpath(ourdir, "Project.toml") 
+@test ourdir == joinpath(pwd(), ".projects", "InstantiationTest-$oursha")
+
+# Test error handling 
+@warn "Should see a URL not found here"
+@test_throws ArgumentError activate_github(reponame, sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af5") # Wrong length. 
+@test_throws ErrorException activate_github(reponame, sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af58") # Wrong SHA. 
 @test_throws ErrorException activate_github(reponame, version = "v2.0.3") # Version not found. 
-@test_throws ErrorException activate_github("QuantEcon/QuantEconLecturePackagess", version = "v0.1.0") # Misspelled repo. 
+@test_throws ErrorException activate_github("arnavs/InstantiationTests", version = "v0.1.0") # Misspelled repo. 
+
+# Test forcing (should visibly see a new install)
+@warn "Forcing beginning now; should see a new install"
+oursha, ourdir = activate_github(reponame, version = version, sha = sha, force = true)
+
+# Activation (should not see a new install)
+@warn "Activating existing environment; should not see a new install"
+activate_github(reponame, version = version, sha = sha)
