@@ -4,7 +4,7 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         mkpath(projdir) 
     # For each case of inputs, end up with a concrete URL to download. 
     if sha != nothing 
-        @assert length(sha) == 40 # Check that it's a valid SHA1 hash. 
+        length(sha) == 40 ? 0 : throw(ArgumentError("Hash needs to be a 40-character string/hexadecimal number.")) # Check that it's a valid SHA1 hash. 
         oursha = sha 
     elseif version != nothing # Given a version but no SHA. 
         tagobj = tag(reponame, version)
