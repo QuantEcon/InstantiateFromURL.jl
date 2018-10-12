@@ -27,11 +27,11 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         # Remove the tarball. 
         rm("$projdir/$oursha.tar.gz")
         Pkg.activate(ourdir)
-        printstyled("Instantiating ", bold=true, color=:light_green); println("$projdir")
+        printstyled("Instantiating ", bold=true, color=:light_green); println(ourdir)
         pkg"instantiate" 
         pkg"precompile"
     else 
-        printstyled("Activating ", bold=true, color=:light_green); println("$projdir")
+        printstyled("Activating ", bold=true, color=:light_green); println(ourdir)
         Pkg.activate(ourdir)
     end 
     # Return some objects. 
