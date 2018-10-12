@@ -19,12 +19,10 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
     if isdir(ourdir) == false || force == true 
         # Turn this into a url. 
         oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
-        
         # Download that url to projects and unzip. 
         tarpath = joinpath(projdir, "$oursha.tar.gz")
         run(gen_download_cmd(oururl, tarpath))
         run(gen_unpack_cmd(tarpath, projdir)) # Will have package name. 
-    
         # Remove the tarball. 
         rm("$projdir/$oursha.tar.gz")
         Pkg.activate(ourdir)
