@@ -37,5 +37,5 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         printstyled("Done ", bold=true, color=:light_green); 
     end 
     # Return some objects. 
-    @suppress begin return oursha, ourdir; end 
+    (oursha, ourdir); 
 end 
