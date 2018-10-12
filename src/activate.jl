@@ -30,4 +30,6 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         else 
             Pkg.activate(ourdir)
         end 
+    # Return some objects. 
+        return oursha, ourdir 
 end 

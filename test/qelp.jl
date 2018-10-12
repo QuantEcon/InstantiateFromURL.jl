@@ -3,6 +3,8 @@ reponame = "QuantEcon/QuantEconLecturePackages"
 version = "v0.1.0"
 sha = "12bd6847559b79d29bd9cdcd3d4e841bc90bc19f" # Arbitrary commit. 
 
+
+
 activate_github(reponame)
 activate_github(reponame, version = version)
 activate_github(reponame, version = version, sha = sha)
