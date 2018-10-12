@@ -2,23 +2,18 @@
 
 A way to bind dependency information to Julia assets without the need to pass around TOML files.
 
+Will download, unpack, and activate a tarball of the resources in `pwd/.projects`
+
 Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944.
 
 ## Overview
 
-At a high level, the function `activate_github()` accepts GitHub repositories containing Julia TOML. Various input flavors are supported: 
+All of the following are valid calls:
 
-* A repository name, which will be interpreted as "grab the current `master`."
-* A repository name and SHA commit hash. 
-* A repository name and version tag. 
-* All three (will pull based on the hash).
+* `activate_github("arnavs/InstantiationTest")`
+* `activate_github("arnavs/InstantiationTest", version = "v0.1.0")`
+* `activate_github("arnavs/InstantiationTest", sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af57")`
 
-The versioned TOML will be stored persistently in the user depot at `~/.julia/.projects`.
+You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
-The TOML must (currently) be in a public repository. 
-
-## Considerations 
-
-* Asset environments are perfectly reproducible, so long as you specify a static object for activation (a hash or tag). 
-* Assets can be moved around the local machine without consequence, and traded between machines. 
-* The only thing which determines the asset's state is the notebook itself (through the TOML requirement). 
+The last command above would saveto `pwd/.projects/InstantiationTest-2d1291c4372c1d1a41f655292f60e1c5b8d5af57/`, and likewise for the other commands (with the appropriate SHA1 hashes).
