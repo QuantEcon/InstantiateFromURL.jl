@@ -24,8 +24,12 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
             run(gen_unpack_cmd(tarpath, projdir)) # Will have package name. 
         # Remove the tarball. 
             rm("$projdir/$oursha.tar.gz")
+            Pkg.activate(ourdir)
+            pkg"instantiate" 
+            pkg"precompile"
+            return 
         end 
-    # Activtaion logic 
+    # Activation logic 
         Pkg.activate(ourdir)
-        pkg"instantiate" 
+        return 
 end 
