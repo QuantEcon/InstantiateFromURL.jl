@@ -1,2 +1,7 @@
 julia 1.0
-GitHub
+GitHub 5.0.2
+BinaryProvider 
+HTTP 
+JSON 
+Pkg 
+Test 
