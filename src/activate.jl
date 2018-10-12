@@ -12,23 +12,20 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
         else # Download master.
             oursha = branch(reponame, "master").commit.sha
         end 
-    # Check if the version is already installed. If it is, activate it. 
+    # Check if the version is already installed. If it is, skip download unless we force. 
         repostr = split(reponame, "/")[2] # This refers to a git path, not anything local. 
         ourdir = joinpath(projdir, "$repostr-$oursha")
-        # Try activating and do nothing otherwise. 
-        if isdir(ourdir) && force == false 
-            Pkg.activate(ourdir)
-            pkg"instantiate" 
-            return
-        else
-            # Do nothing. 
+        if isdir(ourdir) == false || force == true 
+        # Turn this into a url. 
+            oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
+        # Download that url to projects and unzip. 
+            tarpath = joinpath(projdir, "$oursha.tar.gz")
+            run(gen_download_cmd(oururl, tarpath))
+            run(gen_unpack_cmd(tarpath, projdir)) # Will have package name. 
+        # Remove the tarball. 
+            rm("$projdir/$oursha.tar.gz")
         end 
-    # Turn this into a url. 
-        oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
-    # Download that url to projects and unzip. 
-        tarpath = joinpath(projdir, "$oursha.tar.gz")
-        run(gen_download_cmd(oururl, tarpath))
-        run(gen_unpack_cmd(tarpath, projdir)) # Will have package name. 
-    # Remove the tarball. 
-        rm("$projdir/$oursha.tar.gz")
+    # Activtaion logic 
+        Pkg.activate(ourdir)
+        pkg"instantiate" 
 end 
