@@ -34,8 +34,8 @@ function activate_github(reponame; version = nothing, sha = nothing, force = fal
     else 
         printstyled("Activating ", bold=true, color=:light_green); println("$projdir")
         Pkg.activate(ourdir)
-        printstyled("Done ", bold=true, color=:light_green); println("$projdir")
+        printstyled("Done ", bold=true, color=:light_green); 
     end 
     # Return some objects. 
-    return oursha, ourdir;
+    @suppress begin return oursha, ourdir; end 
 end 
