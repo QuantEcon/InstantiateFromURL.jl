@@ -16,4 +16,4 @@ All of the following are valid calls:
 
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
-The last command above would saveto `pwd/.projects/InstantiationTest-2d1291c4372c1d1a41f655292f60e1c5b8d5af57/`, and likewise for the other commands (with the appropriate SHA1 hashes).
+The last command above would save to `pwd/.projects/InstantiationTest-2d1291c4372c1d1a41f655292f60e1c5b8d5af57/`, and likewise for the other commands (with the appropriate SHA1 hashes).
