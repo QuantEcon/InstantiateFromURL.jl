@@ -33,7 +33,7 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         mv("$tmpdir/$subtmpdir", target, force = true) # Force will overwrite existing dir. 
         # Clean. 
         rm(tarpath)
-        rm(tmpdir)
+        rm(tmpdir, recursive = true)
         # Instantiate and precompile.
         printstyled("Instantiating ", bold=true, color=:light_green); println(target)
         Pkg.activate(target)
