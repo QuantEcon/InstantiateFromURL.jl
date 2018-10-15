@@ -22,7 +22,6 @@ oursha, ourdir = activate_github(reponame, sha = sha)
 
 # Test error handling 
 @warn "Should see a URL not found here"
-@test_throws ArgumentError activate_github(reponame, sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af5") # Wrong length. 
 @test_throws ArgumentError activate_github(reponame, version = version, sha = sha)
 @test_throws ErrorException activate_github(reponame, sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af58") # Wrong SHA. 
 @test_throws ErrorException activate_github(reponame, version = "v2.0.3") # Version not found. 
