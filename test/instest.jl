@@ -1,7 +1,7 @@
 
 reponame = "arnavs/InstantiationTest"
 version = "v0.1.0"
-sha = "2d1291c4372c1d1a41f655292f60e1c5b8d5af57" # Arbitrary commit. 
+sha = "2d1291" # Arbitrary commit. 
 
 isdir(".projects") == false || rm(".projects", recursive = true) # Clean the environment before testing. 
 
