@@ -1,3 +1,3 @@
-using InstantiateFromURL, Test, GitHub, Pkg
+using InstantiateFromURL, Test, Pkg
 
 @testset begin include("maintest.jl") end # arnavs/InstantationTest
