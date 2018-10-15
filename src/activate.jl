@@ -19,21 +19,23 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
     if isdir(target) && tarprefix != "master" && force == false # Static prefix that's already downloaded, no force. 
         Pkg.activate(target)
     else 
-        # Download the tarball. 
+        # Make a temporary directory for our use. 
+        tmpdir = tempdir()
+        # Download the tarball to that directory. 
         tarurl = "https://github.com/$(reponame)/archive/$(tarprefix).tar.gz"
-        tarpath = joinpath(projdir, "$repostr-$tarprefix.tar.gz") 
+        tarpath = joinpath(tmpdir, "$repostr-$tarprefix.tar.gz")
         printstyled("Downloading ", bold=true, color=:light_green); println("$reponame-$tarprefix → $projdir")
         run(gen_download_cmd(tarurl, tarpath)) # Download the tarball. 
-        # Unpack the tarball to a tmp directory. 
-        tmpdir = joinpath(projdir, "tmp")
-        mkpath(tmpdir)
+        # Unpack the tarball to that directory. 
         @suppress_out begin run(gen_unpack_cmd(tarpath, tmpdir)) end
-        # Move the tmp directory to the target. 
-        subtmpdir = readdir(tmpdir)[1] # Has only one subdirectory. 
-        mv("$tmpdir/$subtmpdir", target, force = true) # Force will overwrite existing dir. 
-        # Clean. 
+        # Remove the tarball to avoid path conflict with the next steps. 
         rm(tarpath)
-        rm(tmpdir, recursive = true)
+        # Find the path of the unpacked tarball (could be a full SHA)
+        sourcedir = filter(object -> occursin("$repostr", object), readdir(tmpdir))[1] # There will only be one of these. 
+        # Move to .projects
+        mv("$tmpdir/$sourcedir", target, force = true) # Force will overwrite existing dir. 
+        # Clean. 
+        isdir(joinpath(tmpdir, sourcedir)) == false || rm(joinpath(tmpdir, sourcedir), recursive = true) # Important for logic. 
         # Instantiate and precompile.
         printstyled("Instantiating ", bold=true, color=:light_green); println(target)
         Pkg.activate(target)
