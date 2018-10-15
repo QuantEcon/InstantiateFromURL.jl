@@ -7,6 +7,6 @@ using Pkg, GitHub, HTTP, JSON, BinaryProvider, Suppressor
 include("activate.jl")
 
 # Exports
-export activate_github, copy_env
+export activate_github
 
 end

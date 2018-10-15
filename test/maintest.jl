@@ -23,7 +23,7 @@ prefix, path = activate_github(reponame, tag = tag2)
 @test path == "$pdir/.projects/InstantiationTest-v0.1.0"
 @test Base.active_project() == "$path/Project.toml"
 
-copy_env(reponame, "v0.1.0", "v0.1.0-edit")
+InstantiateFromURL.copy_env(reponame, "v0.1.0", "v0.1.0-edit")
 prefix, path = activate_github(reponame, tag = "v0.1.0-edit")
 @test prefix == "v0.1.0-edit"
 @test path == "$pdir/.projects/InstantiationTest-v0.1.0-edit"
