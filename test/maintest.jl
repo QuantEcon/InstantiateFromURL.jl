@@ -5,7 +5,7 @@ sha = "181f673" # 7 chars
 pdir = pwd()
 
 # Clean environment. 
-isdir(".projects" == false) || rm(".projects", recursive = true)
+isdir(".projects") == false || rm(".projects", recursive = true)
 
 prefix, path = activate_github(reponame)
 @test prefix == "master"
