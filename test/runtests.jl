@@ -1,3 +1,3 @@
-using InstantiateFromURL, Test, GitHub
+using InstantiateFromURL, Test, GitHub, Pkg
 
-@testset begin include("instest.jl") end # arnavs/InstantationTest
+@testset begin include("maintest.jl") end # arnavs/InstantationTest

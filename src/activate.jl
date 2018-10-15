@@ -1,38 +1,52 @@
-function activate_github(reponame; version = nothing, sha = nothing, force = false)
+function activate_github(reponame; tag = nothing, sha = nothing, force = false)
     # Make sure that our .projects environment is kosher. 
-    projdir = joinpath(pwd(), ".projects") # DEPOT_PATH[1] is our .julia 
+    projdir = joinpath(pwd(), ".projects") 
     mkpath(projdir) 
     # For each case of inputs, end up with a concrete URL to download. 
     if sha != nothing 
-        version == nothing || throw(ArgumentError("You can't give both a version and an SHA hash."))
-        oursha = sha 
-    elseif version != nothing # Given a version but no SHA. 
-        tagobj = tag(reponame, version)
-        oursha = tagobj.object["sha"]
-    else # Download master.
-        oursha = branch(reponame, "master").commit.sha
+        length(sha) >= 6 || throw(ArgumentError("SHA needs to be at least 6 characters."))
+        tag == nothing || throw(ArgumentError("You can't give both a tag and an SHA hash."))
+        tarprefix = sha   
+    elseif tag != nothing # Given a version but no SHA. 
+        tarprefix = tag
+    else # Default to master if nothing is given. 
+        tarprefix = "master"
     end 
-    # Check if the version is already installed. If it is, skip download unless we force. 
-    repostr = split(reponame, "/")[2] # This refers to a git path, not anything local. 
-    ourdir = joinpath(projdir, "$repostr-$oursha")
-    if isdir(ourdir) == false || force == true 
-        # Turn this into a url. 
-        oururl = "https://github.com/$(reponame)/archive/$(oursha).tar.gz"
-        # Download that url to projects and unzip. 
-        tarpath = joinpath(projdir, "$oursha.tar.gz")
-        printstyled("Downloading ", bold=true, color=:light_green); println("$reponame-$oursha → $projdir")
-        run(gen_download_cmd(oururl, tarpath))
-        @suppress_out begin run(gen_unpack_cmd(tarpath, projdir)) end # Will have package name. 
-        # Remove the tarball. 
-        rm("$projdir/$oursha.tar.gz")
-        Pkg.activate(ourdir)
-        printstyled("Instantiating ", bold=true, color=:light_green); println(ourdir)
-        pkg"instantiate" 
-        pkg"precompile"
+    # Common objects for all cases. 
+    repostr = split(reponame, "/")[2] 
+    target = joinpath(projdir, "$repostr-$tarprefix") 
+    # Branches of logic. 
+    if isdir(target) && tarprefix != "master" && force == false # Static prefix that's already downloaded, no force. 
+        Pkg.activate(target)
     else 
-        printstyled("Activating ", bold=true, color=:light_green); println(ourdir)
-        Pkg.activate(ourdir)
+        # Download the tarball. 
+        tarurl = "https://github.com/$(reponame)/archive/$(tarprefix).tar.gz"
+        tarpath = joinpath(projdir, "$repostr-$tarprefix.tar.gz") 
+        printstyled("Downloading ", bold=true, color=:light_green); println("$reponame-$tarprefix → $projdir")
+        run(gen_download_cmd(tarurl, tarpath)) # Download the tarball. 
+        # Unpack the tarball to a tmp directory. 
+        tmpdir = joinpath(projdir, "tmp")
+        mkpath(tmpdir)
+        @suppress_out begin run(gen_unpack_cmd(tarpath, tmpdir)) end
+        # Move the tmp directory to the target. 
+        subtmpdir = readdir(tmpdir)[1] # Has only one subdirectory. 
+        mv("$tmpdir/$subtmpdir", target, force = true) # Force will overwrite existing dir. 
+        # Clean. 
+        rm(tarpath)
+        rm(tmpdir)
+        # Instantiate and precompile.
+        printstyled("Instantiating ", bold=true, color=:light_green); println(target)
+        Pkg.activate(target)
+        pkg"instantiate"
+        pkg"precompile"
     end 
-    # Return some objects. 
-    (oursha, ourdir); 
+    tarprefix, target
+end 
+
+function copy_env(reponame, oldtag, newtag)
+    repostr = split(reponame, "/")[2]
+    projdir = joinpath(pwd(), ".projects")
+    olddir = joinpath(projdir, "$repostr-$oldtag")
+    newdir = joinpath(projdir, "$repostr-$newtag")
+    cp(olddir, newdir, force = true)
 end 
