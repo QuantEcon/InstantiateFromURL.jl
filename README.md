@@ -1,10 +1,10 @@
 # InstantiateFromURL
 
-A way to bind dependency information to Julia assets without the need to pass around TOML files.
+A way to bind dependency information to Julia assets without the need to pass around TOML files
 
 Will download, unpack, and activate a tarball of the resources in `pwd/.projects`
 
-Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944.
+Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944
 
 ## Overview
 
@@ -12,12 +12,18 @@ GitHub repositories are expected to include a `Project.toml` and `Manifest.toml`
 
 All of the following are valid calls:
 
-* `activate_github("QuantEcon/QuantEconLecturePackages")`, which returns the `master` branch
-* `activate_github("QuantEcon/QuantEconLecturePackages", version = "v0.1.0")` - using the [v0.1.0 tag](https://github.com/QuantEcon/QuantEconLecturePackages/tree/v0.1.0)
-* `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9")` - using that [commit](https://github.com/QuantEcon/QuantEconLecturePackages/commit/0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9)
+* `activate_github("QuantEcon/QuantEconLecturePackages")`, which saves to `.projects/QuantEconLecturePackages-master`
+* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "master")`, which gives us the same thing. 
+* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.1.0")`, which saves that version to `.projects/QuantEconLecturePackages-v0.1.0`
+* `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985")` - which saves that commit to `.projects/QuantEconLecturePackages-0c2985`
 
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
-The last command above would save to `pwd/.projects/QuantEcon/QuantEconLecturePackages-0c2985ea398f2c1e7c6a3b3af2425286bf8f58b9/`, and likewise for the other commands (with the appropriate SHA1 hashes).
+There's also a non-exported `copy_env(reponame, oldprefix, newprefix)` which will "check out" a new copy of, say, `master`, that is protected from future updates (here, "prefix" is the tarball prefix, or everything after the `-` in the directories above). So:
 
-:warning: There is a rate limit on the GitHub API that's bound to your IP address. It shouldn't impact all but the most heavy users, but it's something to note
+```
+activate_github("QuantEcon/QuantEconLecturePackages")
+copy_env("QuantEcon/QuantEconLecturePackages", "master", "mymaster")
+activate_github("QuantEcon/QuantEconLecturePackages", tag = "mymaster") # Protected from future updates. 
+``` 
+
