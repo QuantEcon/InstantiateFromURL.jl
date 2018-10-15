@@ -27,3 +27,4 @@ copy_env("QuantEcon/QuantEconLecturePackages", "master", "mymaster")
 activate_github("QuantEcon/QuantEconLecturePackages", tag = "mymaster") # Protected from future updates. 
 ``` 
 
+No GitHub API calls are consumed
