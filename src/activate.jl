@@ -41,8 +41,10 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false)
         Pkg.activate(target)
         pkg"instantiate"
         pkg"precompile"
-    end 
-    tarprefix, target
+    end
+    projpath = joinpath(target, "Project.toml")
+    packages = TOML.parsefile(projpath)["deps"]
+    tarprefix, target, packages
 end 
 
 function copy_env(reponame, oldtag, newtag)
