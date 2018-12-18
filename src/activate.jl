@@ -30,7 +30,6 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
         catch e
             if e isa MethodError
                 printstyled("Package installation and activation not supported in this setup. You should add packages manually.", bold = true, color = :red)
-                println("Exiting now...")
                 return nothing
             else
                 throw(e)
