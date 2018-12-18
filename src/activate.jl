@@ -32,8 +32,10 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
                 printstyled("Package installation and activation not supported in this setup. You should add packages manually.", bold = true, color = :red)
                 println("Exiting now...")
                 return nothing
+            else
+                throw(e)
             end
-        end 
+        end
         # Unpack the tarball to that directory.
         @suppress_out begin run(gen_unpack_cmd(tarpath, tmpdir)) end
         # Remove the tarball to avoid path conflict with the next steps.
