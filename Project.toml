@@ -12,7 +12,6 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [extras]
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-TOML = "191fdcea-f9f2-43e0-b922-d33f71e2abc3"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]

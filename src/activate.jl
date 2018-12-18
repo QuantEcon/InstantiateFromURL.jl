@@ -52,7 +52,7 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
         pkg"precompile"
     end
     projpath = joinpath(target, "Project.toml")
-    packages = TOML.parsefile(projpath)["deps"]
+    packages = parsefile(projpath)["deps"]
     if add_default_environment # seed the default environment with the new packages if true
         printstyled("Adding to the default environment... ", bold=true, color=:light_green);
         pkg"activate "
