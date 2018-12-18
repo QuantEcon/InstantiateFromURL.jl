@@ -25,7 +25,15 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
         tarurl = "https://github.com/$(reponame)/archive/$(tarprefix).tar.gz"
         tarpath = joinpath(tmpdir, "$repostr-$tarprefix.tar.gz")
         printstyled("Downloading ", bold=true, color=:light_green); println("$reponame-$tarprefix → $projdir")
-        run(gen_download_cmd(tarurl, tarpath)) # Download the tarball.
+        try
+            run(gen_download_cmd(tarurl, tarpath)) # Download the tarball.
+        catch e
+            if e isa MethodError
+                printstyled("Package installation and activation not supported in this setup. You should add packages manually.", bold = true, color = :red)
+                println("Exiting now...")
+                return nothing
+            end
+        end 
         # Unpack the tarball to that directory.
         @suppress_out begin run(gen_unpack_cmd(tarpath, tmpdir)) end
         # Remove the tarball to avoid path conflict with the next steps.
