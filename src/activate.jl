@@ -47,7 +47,8 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
     if add_default_environment # seed the default environment with the new packages if true
         printstyled("Adding to the default environment... ", bold=true, color=:light_green);
         pkg"activate "
-        @suppress foreach(Pkg.add, keys(packages))
+        @show pkglist = Array{String}(collect(keys(packages)))
+        Pkg.add(pkglist)
         Pkg.activate(target) # go back to the activated environment
     end
     tarprefix, target, packages
