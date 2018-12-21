@@ -14,7 +14,7 @@ All of the following are valid calls:
 
 * `activate_github("QuantEcon/QuantEconLecturePackages")`, which saves to `.projects/QuantEconLecturePackages-master`
 * `activate_github("QuantEcon/QuantEconLecturePackages", tag = "master")`, which gives us the same thing. 
-* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.1.0")`, which saves that version to `.projects/QuantEconLecturePackages-v0.1.0`
+* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.5")`, which saves that version to `.projects/QuantEconLecturePackages-v0.9.5`
 * `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985")`, which saves that commit to `.projects/QuantEconLecturePackages-0c2985`
 
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
