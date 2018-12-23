@@ -36,13 +36,13 @@ function activate_github(reponame; tag = nothing, sha = nothing, force = false, 
             end
         end
         # Unpack the tarball to that directory.
-        @suppress_out begin run(gen_unpack_cmd(tarpath, tmpdir)) end
+        run(gen_unpack_cmd(tarpath, tmpdir))
         # Remove the tarball to avoid path conflict with the next steps.
         rm(tarpath)
         # Find the path of the unpacked tarball (could be a full SHA)
         sourcedir = filter(object -> occursin("$repostr", object), readdir(tmpdir))[1] # There will only be one of these.
         # Move to .projects
-        mv("$tmpdir/$sourcedir", target, force = true) # Force will overwrite existing dir.
+        mv(joinpath(tmpdir, sourcedir), target, force = true) # Force will overwrite existing dir.
         # Clean.
         isdir(joinpath(tmpdir, sourcedir)) == false || rm(joinpath(tmpdir, sourcedir), recursive = true) # Important for logic.
         # Instantiate and precompile.
