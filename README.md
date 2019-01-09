@@ -19,6 +19,8 @@ All of the following are valid calls:
 
 You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
 
+You can also include an `add_default_environment = true` in your calls, which will `Pkg.add()` (at once) the packages grabbed to your default (`~/.julia/environments/v1.0`) environment. This way, packages/versions you install via `InstantiateFromURL` are immediately available, and can avoid teaching people about environments. 
+
 There's also a non-exported `copy_env(reponame, oldprefix, newprefix)` which will let you:
 
 ```
