@@ -76,39 +76,38 @@ function activate_github_path(reponame; path = "",
                                 tag = "master",
                                 force = false, 
                                 activate = true)
-    # conditions for a no-op exit 
-    need_activation = (Base.active_project() != joinpath(pwd(), "Project.toml"))
+    # download step 
     if "Project.toml" ∈ readdir(pwd()) && force == false 
         @warn "There's already a Project.toml in the current directory, and force = false."
-        (activate && need_activation) ? pkg"activate ." : nothing
         return 0 
+    else 
+        # url construction and download 
+        url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Project.toml"], "/") 
+        url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Manifest.toml"], "/") 
+        try # project 
+            resp_project = HTTP.get(url_project);
+            io = open("Project.toml", "w")
+            println(io, String(resp_project.body))
+            close(io)
+        catch e 
+            @warn "There was an error retrieving the Project.toml"
+            throw(e) 
+        end 
+        try # manifest  
+            resp_manifest = HTTP.get(url_manifest);
+            io = open("Manifest.toml", "w")
+            println(io, String(resp_manifest.body))
+            close(io)    
+        catch e 
+            # do nothing, since we aren't too fussed about the Manifest.
+        end 
     end 
     
-    # url construction and download 
-    url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Project.toml"], "/") 
-    url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Manifest.toml"], "/") 
-    try # project 
-        resp_project = HTTP.get(url_project);
-        io = open("Project.toml", "w")
-        println(io, String(resp_project.body))
-        close(io)
-    catch e 
-        @warn "There was an error retrieving the Project.toml"
-        throw(e) 
-    end 
-    try # manifest  
-        resp_manifest = HTTP.get(url_manifest);
-        io = open("Manifest.toml", "w")
-        println(io, String(resp_manifest.body))
-        close(io)    
-    catch e 
-        # do nothing, since we aren't too fussed about the Manifest.
-    end 
-
-    # package operations 
+    # activation step 
+    need_activation = (Base.active_project() != joinpath(pwd(), "Project.toml"))
     if activate && need_activation
         pkg"activate ."
-        pkg"instantiate" # do this the first time 
-        pkg"precompile"
+        pkg"instantiate" 
+        pkg"precompile" 
     end 
 end
