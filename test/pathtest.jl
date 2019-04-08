@@ -7,7 +7,7 @@ activate_github_path(reponame, path = path, activate = false)
 @test "Manifest.toml" ∈ readdir()
 
 # vanilla call repeated (should return 0)
-# @test_warn "There's already a Project.toml in the current directory, and force = false." activate_github_path(reponame, path = path, force = false, activate = false) 
+@test_logs (:warn, "There's already a Project.toml in the current directory, and force = false.") activate_github_path(reponame, path = path, force = false, activate = false) 
 
 # clean 
 rm("Project.toml")
