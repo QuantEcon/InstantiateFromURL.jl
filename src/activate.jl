@@ -77,9 +77,10 @@ function activate_github_path(reponame; path = "",
                                 force = false, 
                                 activate = true)
     # conditions for a no-op exit 
+    need_activation = (Base.active_project() != joinpath(pwd(), "Project.toml"))
     if "Project.toml" ∈ readdir(pwd()) && force == false 
         @warn "There's already a Project.toml in the current directory, and force = false."
-        activate ? pkg"activate ." : nothing
+        (activate && need_activation) ? pkg"activate ." : nothing
         return 0 
     end 
     
@@ -105,11 +106,9 @@ function activate_github_path(reponame; path = "",
     end 
 
     # package operations 
-    if activate == true 
-        activate ? pkg"activate ." : nothing 
-        pkg"instantiate" 
+    if activate && need_activation
+        pkg"activate ."
+        pkg"instantiate" # do this the first time 
         pkg"precompile"
-    else 
-        # don't wory about package operations 
     end 
 end
