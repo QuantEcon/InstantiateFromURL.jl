@@ -1,7 +1,7 @@
 name = "InstantiateFromURL"
 uuid = "f04cf714-cbf6-11e8-0aee-efd32d09e63e"
 authors = ["Arnav Sood <soodarnav01@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
