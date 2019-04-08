@@ -8,25 +8,33 @@ Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://githu
 
 ## Overview
 
-GitHub repositories are expected to include a `Project.toml` and `Manifest.toml` file in the root directory, and all other files are ignored. For ex: [QuantEcon/QuantEconLecturePackages](https://github.com/QuantEcon/QuantEconLecturePackages)
+We have two main methods, `activate_github` (dealing with a versioned, dedicated TOML repo, like [QuantEcon/QuantEconLecturePackages](https://github.com/QuantEcon/QuantEconLecturePackages)), and `activate_github_path` (pulling down unversioned TOML from a git repository; i.e., if notebooks live with TOML in a repository.)
 
-All of the following are valid calls:
-
-* `activate_github("QuantEcon/QuantEconLecturePackages")`, which saves to `.projects/QuantEconLecturePackages-master`
-* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "master")`, which gives us the same thing. 
-* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.5")`, which saves that version to `.projects/QuantEconLecturePackages-v0.9.5`
-* `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985")`, which saves that commit to `.projects/QuantEconLecturePackages-0c2985`
-
-You can also call any of the above with `; force = true`, which will force a re-download of the source resources. 
-
-You can also include an `add_default_environment = true` in your calls, which will `Pkg.add()` (at once) the packages grabbed to your default (`~/.julia/environments/v1.0`) environment. This way, packages/versions you install via `InstantiateFromURL` are immediately available, and can avoid teaching people about environments. 
-
-There's also a non-exported `copy_env(reponame, oldprefix, newprefix)` which will let you:
+For `activate_github`, the signature is: 
 
 ```
-activate_github("QuantEcon/QuantEconLecturePackages")
-copy_env("QuantEcon/QuantEconLecturePackages", "master", "mymaster")
-activate_github("QuantEcon/QuantEconLecturePackages", tag = "mymaster") # Protected from future updates. 
-``` 
+function activate_github(reponame; # like "QuantEcon/QuantEconLecturePackages"
+                        tag = nothing, # could be "master" or a git tag
+                        sha = nothing, # could point to a specific commit
+                        force = false, # will overwrite the local version of this TOML if true
+                        add_default_environment = false) # will add these projects to the default (e.g., v1.1) TOML if true
+```
 
-No GitHub API calls are consumed, so rate-limiting is not an issue 
+Example calls include: 
+
+* `activate_github("QuantEcon/QuantEconLecturePackages")`
+* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "master")`
+* `activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.5")`
+* `activate_github("QuantEcon/QuantEconLecturePackages", sha = "0c2985")`
+
+For `activate_github_path`, the signature is: 
+
+```
+function activate_github_path(reponame; # something like "QuantEcon/SimpleDifferentialOperators.jl"
+                                path = "", # like "docs/examples", or where in the (master) source tree the TOML is 
+                                tag = "master",
+                                force = false,
+                                activate = true) # decide whether to `activate; instantiate; precompile` or not
+```
+
+**Note:** Because switching project files currently leads to repeat precompilations in Julia, `activate` will only bind if the current Project.toml (i.e., `Base.active_project()`) is in a different location than the pwd (i.e., `joinpath(pwd(), "Project.toml")`.)
