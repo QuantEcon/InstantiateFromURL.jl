@@ -79,7 +79,6 @@ function activate_github_path(reponame; path = "",
     # download step 
     if "Project.toml" ∈ readdir(pwd()) && force == false 
         @warn "There's already a Project.toml in the current directory, and force = false."
-        return 0 
     else 
         # url construction and download 
         url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Project.toml"], "/") 
