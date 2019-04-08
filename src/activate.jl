@@ -77,7 +77,7 @@ function activate_github_path(reponame; path = "",
                                 force = false, 
                                 activate = true)
     # conditions for a no-op exit 
-    if "Project.toml" ∈ readdir(pwd()) && force = false 
+    if "Project.toml" ∈ readdir(pwd()) && force == false 
         @warn "There's already a Project.toml in the current directory, and force = false."
         activate ? pkg"activate ." : nothing
         return 0 
