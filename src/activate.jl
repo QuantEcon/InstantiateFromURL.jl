@@ -70,3 +70,43 @@ function copy_env(reponame, oldtag, newtag)
     newdir = joinpath(projdir, "$repostr-$newtag")
     cp(olddir, newdir, force = true)
 end
+
+# Clone the TOML files from some git repo's _current state_ to the local dir
+function activate_github_path(reponame; path = "", 
+                                tag = "master",
+                                force = false, 
+                                activate = true)
+    # download step 
+    if "Project.toml" ∈ readdir(pwd()) && force == false 
+        @warn "There's already a Project.toml in the current directory, and force = false."
+    else 
+        # url construction and download 
+        url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Project.toml"], "/") 
+        url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, tag, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, tag, path, "Manifest.toml"], "/") 
+        try # project 
+            resp_project = HTTP.get(url_project);
+            io = open("Project.toml", "w")
+            println(io, String(resp_project.body))
+            close(io)
+        catch e 
+            @warn "There was an error retrieving the Project.toml"
+            throw(e) 
+        end 
+        try # manifest  
+            resp_manifest = HTTP.get(url_manifest);
+            io = open("Manifest.toml", "w")
+            println(io, String(resp_manifest.body))
+            close(io)    
+        catch e 
+            # do nothing, since we aren't too fussed about the Manifest.
+        end 
+    end 
+    
+    # activation step 
+    need_activation = (Base.active_project() != joinpath(pwd(), "Project.toml"))
+    if activate && need_activation
+        pkg"activate ."
+        pkg"instantiate" 
+        pkg"precompile" 
+    end 
+end
