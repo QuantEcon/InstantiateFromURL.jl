@@ -105,7 +105,11 @@ function activate_github_path(reponame; path = "",
     end 
 
     # package operations 
-    activate ? pkg"activate ." : nothing 
-    pkg"instantiate" 
-    pkg"precompile"
+    if activate == true 
+        activate ? pkg"activate ." : nothing 
+        pkg"instantiate" 
+        pkg"precompile"
+    else 
+        # don't wory about package operations 
+    end 
 end
