@@ -75,7 +75,15 @@ end
 function activate_github_path(reponame; path = "", 
                                 tag = "master",
                                 force = false, 
-                                activate = true)
+                                activate = true,
+                                ignore_if_project_activated = true)
+    # no-op logic 
+    if ignore_if_project_activated && Base.active_project() !== Base.load_path_expand("@v#.#")
+        @show Base.active_project()
+        println("Using the above project file, since kwarg `ignore_if_project_activated` = true.")
+        return 0 
+    end
+
     # download step 
     if "Project.toml" ∈ readdir(pwd()) && force == false 
         @warn "There's already a Project.toml in the current directory, and force = false."
