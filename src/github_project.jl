@@ -73,11 +73,15 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
 
-    @suppress Base.download(url_project, joinpath(pwd(), "Project.toml"))
+    try @suppress Base.download(url_project, joinpath(pwd(), "Project.toml")); 
+    catch e 
+        @warn "Can't download Project. Make sure the URL is accurate."
+        throw(e)
+    end 
     # try/catch on Manifest because it isn't always required
     try @suppress Base.download(url_manifest, joinpath(pwd(), "Manifest.toml"));
     catch e
-        @info "No Manifest present at URL."
+        @info "Can't download Manifest."
     end 
     
     @suppress Pkg.activate(pwd())
