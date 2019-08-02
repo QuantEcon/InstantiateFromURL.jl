@@ -60,13 +60,14 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     end 
 
     # if we're satisfied with the project activated, just display 
+    # this case catches most scenarios
     if is_project_activated && !force 
         display()
         return 
     end 
 
     # at this point, need to do downloading/overwriting/etc.
-    if force && is_project_local
+    if does_local_project_exist 
         display("removing local TOML...")
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
