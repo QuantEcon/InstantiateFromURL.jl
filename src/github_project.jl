@@ -81,7 +81,9 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     end 
     
     @suppress Pkg.activate(pwd())
+    "instantiating..."
     @suppress Pkg.instantiate()
+    "precompiling..."
     @suppress pkg"precompile"
     displayproj()
     return # return nothing
