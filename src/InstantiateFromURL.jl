@@ -8,7 +8,11 @@ import Pkg.TOML: parsefile
 
 # Code
 include("activate.jl")
+include("github_project.jl")
 
 # Exports
-export activate_github, activate_github_path
+export activate_github, activate_github_path # default
+export add_to_default # IJulia-refactor
+
+
 end
