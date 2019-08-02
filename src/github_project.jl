@@ -44,17 +44,14 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
         
         # Always display this 
-        @info "Using $(project_file)." 
-        
-        # Only display this if it's meaningful. 
-        if project_name != "NA"
-            @info "Name: $project_name." 
-        end 
-        if project_version != "NA"
-            @info "Version: $project_version."
-        end 
-        if project_version != version 
-            @info "Found version doesn't match requested."
+        @info "$(project_file) activated." 
+
+        # Display depending on results
+        project_requested = split(reponame, "/")[2]
+        if project_name == project_requested && project_version != version && project_version != "NA"
+            @info "$project_name $project_version activated, $version requested" 
+        elseif project_name != project_requested && project_name != "NA"
+            @info "$project_name activated, $project_requested" 
         end 
     end 
 
