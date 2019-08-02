@@ -3,7 +3,7 @@
 # Without versions for now (so that we don't force downgrades, etc.)... can get version information easily enough, though.
 function packages_to_default_environment() # no arg, since it operates on the activated environment
     if (Base.active_project() == Base.load_path_expand("@v#.#"))
-        @info "Your default environment is activated; nothing to do."
+        @info "No project activated."
         return 
     end
 
@@ -39,16 +39,12 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     function displayproj()
         ctx = Pkg.Types.Context();
         project_information = parsefile(ctx.env.project_file);
-        @info "Activated project: $(ctx.env.project_file)"
-
-        if haskey(project_information, "version") && project_information["version"] != version 
-            @info "Present version ($(project_information["version"])) differs from requested ($version)."
-        elseif haskey(project_information, "version")
-            display("Activated project version: $(project_information["version"])")
-        end 
-
-        if haskey(project_information, "name")
-            display("Activated project name: $(project_information["name"])")
+        project_file = ctx.env.project_file;
+        project_version = haskey(project_information, "version") ? project_information["version"] : "NA"
+        project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
+        @info "Using $(project_file). Name: $project_name. Version: $project_version."
+        if project_version != version 
+            @info "Found version doesn't match requested."
         end 
     end 
 
@@ -68,7 +64,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        display("local TOML exists; will be replaced")
+        @info "local TOML exists; will be replaced"
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
@@ -78,6 +74,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         @warn "Can't download Project. Make sure the URL is accurate."
         throw(e)
     end 
+
     # try/catch on Manifest because it isn't always required
     try @suppress Base.download(url_manifest, joinpath(pwd(), "Manifest.toml"));
     catch e
