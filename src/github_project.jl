@@ -68,14 +68,14 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        display("removing local TOML...")
+        display("local TOML exists; will be replaced")
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
 
-    Base.download(url_project, joinpath(pwd(), "Project.toml"))
+    @suppress Base.download(url_project, joinpath(pwd(), "Project.toml"))
     # try/catch on Manifest because it isn't always required
-    try Base.download(url_manifest, joinpath(pwd(), "Manifest.toml"));
+    try @suppress Base.download(url_manifest, joinpath(pwd(), "Manifest.toml"));
     catch e
         @info "No Manifest present at URL."
     end 
