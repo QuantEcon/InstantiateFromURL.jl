@@ -36,33 +36,33 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Manifest.toml"], "/")
 
     # unified display for all cases
-    function display()
+    function displayproj()
         ctx = Pkg.Types.Context();
         project_information = parsefile(ctx.env.project_file);
         @info "Activated project: $(ctx.env.project_file)"
 
-        if project_information["version"] != version 
+        if haskey(project_information, "version") && project_information["version"] != version 
             @info "Present version ($(project_information["version"])) differs from requested ($version). Proceeding since force = false."
-        else 
+        elseif haskey(project_information, "version")
             display("Activated project version: $(project_information["version"])")
         end 
 
-        if project_information["name"] != nothing 
+        if haskey(project_information, "name")
             display("Activated project name: $(project_information["name"])")
         end 
     end 
 
     # use a local project if it exists and we don't have it set to force
     if !is_project_local && does_local_project_exist && !force
-        Pkg.activate(joinpath(pwd(), "Project.toml"));
-        display()
+        Pkg.activate(pwd());
+        displayproj()
         return 
     end 
 
     # if we're satisfied with the project activated, just display 
     # this case catches most scenarios
     if is_project_activated && !force 
-        display()
+        displayproj()
         return 
     end 
 
@@ -80,9 +80,9 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         @info "No Manifest present at URL."
     end 
     
-    @suppress Pkg.activate(joinpath(pwd(), "Project.toml"))
+    @suppress Pkg.activate(pwd())
     @suppress Pkg.instantiate()
     @suppress pkg"precompile"
-    display()
+    displayproj()
     return # return nothing
 end
