@@ -32,8 +32,8 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     is_project_activated = !(Base.active_project() == Base.load_path_expand("@v#.#")) 
     is_project_local = dirname(current_proj) == pwd() 
     does_local_project_exist = isfile(joinpath(pwd(), "Project.toml"))
-    url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, version, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Project.toml"], "/") 
-    url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Manifest.toml"], "/")
+    url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, "v" * version, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Project.toml"], "/") 
+    url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, "v" * version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Manifest.toml"], "/")
 
     # unified display for all cases
     function displayproj()
