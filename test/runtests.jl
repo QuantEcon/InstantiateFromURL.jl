@@ -8,3 +8,4 @@ import Pkg.TOML: parsefile
 @testset "TOML Tests" begin include("tomltest.jl") end
 @testset "Directory Names Tests" begin include("namestest.jl") end # same as maintest, but in a different directory
 @testset "Test activate_github_path" begin include("pathtest.jl") end 
+@testset "Recursive Project Tests" begin include("github_project_test.jl") end 
