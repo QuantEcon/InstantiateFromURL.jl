@@ -42,7 +42,7 @@ function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         @info "Activated project: $(ctx.env.project_file)"
 
         if haskey(project_information, "version") && project_information["version"] != version 
-            @info "Present version ($(project_information["version"])) differs from requested ($version). Proceeding since force = false."
+            @info "Present version ($(project_information["version"])) differs from requested ($version)."
         elseif haskey(project_information, "version")
             display("Activated project version: $(project_information["version"])")
         end 
