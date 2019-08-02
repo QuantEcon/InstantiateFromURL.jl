@@ -14,6 +14,7 @@ function add_to_default() # no arg, since it operates on the activated environme
     Pkg.activate(default_env)
     Pkg.add(packages) 
     Pkg.activate(original_env)
+    return
 end 
 
 function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
