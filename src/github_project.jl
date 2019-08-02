@@ -33,8 +33,8 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     is_project_local = dirname(current_proj) == pwd() 
     does_local_project_exist = isfile(joinpath(pwd(), "Project.toml"))
     url_version = version == "master" ? version : "v" * version
-    url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, url_version, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Project.toml"], "/") 
-    url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, url_version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, version, path, "Manifest.toml"], "/")
+    url_project = (path == "") ? join(["https://raw.githubusercontent.com", reponame, url_version, "Project.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, url_version, path, "Project.toml"], "/") 
+    url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, url_version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, url_version, path, "Manifest.toml"], "/")
 
     # unified display for all cases
     function displayproj()
@@ -51,9 +51,9 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_requested = split(reponame, "/")[2]
         if project_name == project_requested && project_version != version && project_version != "NA"
             @info "$project_name $project_version activated, $version requested" 
-        elseif project_name != project_requested && project_name != "NA"
-            @info "$project_name activated, $project_requested requested." 
-        end 
+        else 
+            @info "Project name is $project_name, version is $project_version"
+        end
     end 
 
     # use a local project if it exists and we don't have it set to force
