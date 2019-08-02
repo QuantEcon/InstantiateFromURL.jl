@@ -42,7 +42,17 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_file = ctx.env.project_file;
         project_version = haskey(project_information, "version") ? project_information["version"] : "NA"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
-        @info "Using $(project_file). Name: $project_name. Version: $project_version."
+        
+        # Always display this 
+        @info "Using $(project_file)." 
+        
+        # Only display this if it's meaningful. 
+        if project_name != "NA"
+            @info "Name: $project_name." 
+        end 
+        if project_version != "NA"
+            @info "Version: $project_version."
+        end 
         if project_version != version 
             @info "Found version doesn't match requested."
         end 
