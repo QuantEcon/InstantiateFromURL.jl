@@ -84,11 +84,9 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         @info "Can't download Manifest."
     end 
     
-    @suppress Pkg.activate(pwd())
-    display("instantiating (may take some time, if packages aren't present)...")
-    @suppress Pkg.instantiate()
-    display("precompiling...")
-    @suppress pkg"precompile"
+    Pkg.activate(pwd())
+    Pkg.instantiate()
+    pkg"precompile"
     displayproj()
     return # return nothing
 end
