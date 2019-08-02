@@ -12,7 +12,6 @@ include("github_project.jl")
 
 # Exports
 export activate_github, activate_github_path # default
-export add_to_default # IJulia-refactor
-
+export add_to_default, github_path # IJulia-refactor
 
 end
