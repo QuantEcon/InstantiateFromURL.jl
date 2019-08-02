@@ -1,7 +1,7 @@
 # Code for the refactor in https://github.com/QuantEcon/InstantiateFromURL.jl/issues/37
 
 # Without versions for now (so that we don't force downgrades, etc.)... can get version information easily enough, though.
-function add_to_default() # no arg, since it operates on the activated environment
+function packages_to_default_environment() # no arg, since it operates on the activated environment
     if (Base.active_project() == Base.load_path_expand("@v#.#"))
         @info "Your default environment is activated; nothing to do."
         return 
@@ -17,7 +17,7 @@ function add_to_default() # no arg, since it operates on the activated environme
     return
 end 
 
-function github_path(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
+function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     path = "", # relative path within the repo (root by default)
     version = "master",
     force = false)
