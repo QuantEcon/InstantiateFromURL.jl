@@ -89,7 +89,6 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     # try/catch on Manifest because it isn't always required
     try @suppress Base.download(url_manifest, joinpath(pwd(), "Manifest.toml"));
     catch e
-        @info "Can't download Manifest."
     end 
     
     Pkg.activate(pwd())
