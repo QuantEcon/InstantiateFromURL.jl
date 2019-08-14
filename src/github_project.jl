@@ -65,7 +65,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # if we're satisfied with the project activated, just display 
     # this case catches most scenarios
-    if is_project_activated && !force 
+    if is_project_activated && !force && does_local_project_exist
         displayproj()
         return 
     end 
