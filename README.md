@@ -2,11 +2,18 @@
 
 [![Build Status](https://travis-ci.com/QuantEcon/InstantiateFromURL.jl.svg?branch=master)](https://travis-ci.com/QuantEcon/InstantiateFromURL.jl)
 
-A way to bind dependency information to Julia assets without the need to pass around TOML files
+A way to bind dependency information to Julia assets without the need to pass around TOML files.
+
+The use case is that your notebooks would have something like the following in their first cell:
+
+```
+using InstantiateFromURL
+github_project("QuantEcon/QuantEconLecturePackages")
+```
 
 Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944
 
-## Overview/Main Method
+## Overview/Method Signature
 
 [**Note**] To account for changes in `IJulia` (where notebooks will now look recursively up the tree for TOML, and use either what they find or the default `v1.x` environment), we've introduced the new function/entrypoint below. The functions we had previously provided are still around, in the subsequent **deprecated** section. 
 
@@ -32,13 +39,6 @@ The logic here is:
 * If a **local project** is activated (i.e., if there is TOML up the source tree), use that unless `force = true`, and print intelligent information about it (e.g., if we asked for version `v0.2.1`, and version `v0.2.0` is found, it will still use `v0.2.0`, and alert you to the difference.)
 
 * ...But, if `force = true`, then regardless of what is activated, the precise set of `Project.toml, Manifest.toml` will be pulled down to the notebook's directory from the specified internet location. 
-
-The use case is that your notebooks would have something like the following in their first cell:
-
-```
-using InstantiateFromURL
-github_project("QuantEcon/QuantEconLecturePackages")
-```
 
 ## Utilities
 
