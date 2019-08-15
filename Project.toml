@@ -3,6 +3,9 @@ uuid = "43edad99-fa64-5e4f-9937-1c09a410b73f"
 authors = ["Arnav Sood <soodarnav01@gmail.com>"]
 version = "0.3.1"
 
+[compat]
+julia = "1"
+
 [deps]
 BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
