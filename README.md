@@ -4,13 +4,50 @@
 
 A way to bind dependency information to Julia assets without the need to pass around TOML files
 
-Will download, unpack, and activate a tarball of the resources in `pwd/.projects`
-
 Based on [Valentin Churavy](https://github.com/vchuravy)'s idea in https://github.com/JuliaLang/IJulia.jl/issues/673#issuecomment-425306944
 
-## Overview
+## Overview/Main Method
 
-We have two main methods, `activate_github` (dealing with a versioned, dedicated TOML repo, like [QuantEcon/QuantEconLecturePackages](https://github.com/QuantEcon/QuantEconLecturePackages)), and `activate_github_path` (pulling down unversioned TOML from a git repository; i.e., if notebooks live with TOML in a repository.)
+[**Note**] To account for changes in `IJulia` (where notebooks will now look recursively up the tree for TOML, and use either what they find or the default `v1.x` environment), we've introduced the new function/entrypoint below. The functions we had previously provided are still around, in the subsequent **deprecated** section. 
+
+The signature is:
+
+```
+function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
+    path = "", # relative path within the repo (root by default)
+    version = "master",
+    force = false)
+```
+
+Where: 
+
+* `reponame` and `path` identify the TOML on the internet. Reponame is something like `"QuantEcon/QuantEconLecturePackages"` The path refers to the path to the TOML within the source repo, and is `""` by default (i.e., referring to top-level.)
+
+* `version` refers to a specific version of the TOML, corresponding to a **github tag** of the `reponame` repo.
+
+* `force` decides whether or not we're comfortable using whatever project-specific IJulia finds (if there is any.) Essentially, **the `force` parameter decides whether to use a soft or hard match.**
+
+The logic here is: 
+
+* If a **local project** is activated (i.e., if there is TOML up the source tree), use that unless `force = true`, and print intelligent information about it (e.g., if we asked for version `v0.2.1`, and version `v0.2.0` is found, it will still use `v0.2.0`, and alert you to the difference.)
+
+* ...But, if `force = true`, then regardless of what is activated, the precise set of `Project.toml, Manifest.toml` will be pulled down to the notebook's directory from the specified internet location. 
+
+The use case is that your notebooks would have something like the following in their first cell:
+
+```
+using InstantiateFromURL
+github_project("QuantEcon/QuantEconLecturePackages")
+```
+
+## Utilities
+
+We also defined: 
+
+* `packages_to_default_environment()`, which will take the current environment's packages, and `Pkg.add()` them to your `v1.x` environment. Useful for "seeding" or setting up new Julia installs, or making sure that deps for one project are available for other projects, etc.
+
+## Deprecated Methods
+
 
 For `activate_github`, the signature is:
 
