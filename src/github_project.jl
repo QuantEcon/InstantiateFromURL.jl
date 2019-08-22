@@ -3,7 +3,7 @@
 # Without versions for now (so that we don't force downgrades, etc.)... can get version information easily enough, though.
 function packages_to_default_environment() # no arg, since it operates on the activated environment
     if (Base.active_project() == Base.load_path_expand("@v#.#"))
-        printstyled("No project activated.", color = :blue)
+        printstyled("No project activated.\n", color = :blue)
         return 
     end
 
@@ -45,7 +45,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
         
         # Always display this 
-        printstyled("$(project_file) activated.", color = :blue)
+        printstyled("$(project_file) activated.\n", color = :blue)
 
         # Display depending on results
         project_requested = replace(split(reponame, "/")[2], ".jl" => "") # strip out ".jl" if it exists
@@ -75,7 +75,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        printstyled("local TOML exists; removing now.", color = :blue)
+        printstyled("local TOML exists; removing now.\n", color = :blue)
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
