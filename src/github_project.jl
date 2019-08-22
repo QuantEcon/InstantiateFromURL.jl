@@ -3,7 +3,7 @@
 # Without versions for now (so that we don't force downgrades, etc.)... can get version information easily enough, though.
 function packages_to_default_environment() # no arg, since it operates on the activated environment
     if (Base.active_project() == Base.load_path_expand("@v#.#"))
-        @info "No project activated."
+        printstyled("No project activated.", color = :blue)
         return 
     end
 
@@ -45,16 +45,16 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
         
         # Always display this 
-        @info "$(project_file) activated." 
+        printstyled("$(project_file) activated.", color = :blue)
 
         # Display depending on results
         project_requested = replace(split(reponame, "/")[2], ".jl" => "") # strip out ".jl" if it exists
         if project_name == project_requested && project_version != version && project_version != "NA"
-            @info "$project_name $project_version activated, $version requested" 
+            printstyled("$project_name $project_version activated, $version requested", color = :blue)
         elseif project_name != project_requested && project_name != "NA"
-            @info "Project name $project_name activated, $project_requested requested."
+            printstyled("Project name $project_name activated, $project_requested requested.", color = :blue)
         else 
-            @info "Project name is $project_name, version is $project_version"
+            printstyled("Project name is $project_name, version is $project_version", color = :blue)
         end
     end 
 
@@ -75,7 +75,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        @info "local TOML exists; removing now."
+        printstyled("local TOML exists; removing now.", color = :blue)
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
