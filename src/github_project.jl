@@ -78,7 +78,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        printstyled(Markdown.pars("\e[1mInfo\e[0m Local TOML exists; removing now.\n"), color = :blue)
+        printstyled(Markdown.parse("\e[1mInfo\e[0m Local TOML exists; removing now.\n"), color = :blue)
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
