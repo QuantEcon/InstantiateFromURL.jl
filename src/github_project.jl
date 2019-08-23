@@ -45,16 +45,16 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
         
         # Always display this 
-        printstyled("$(project_file) activated.\n", color = :blue)
+        printstyled(Markdown.parse("\e[1mActivated\e[0m $project_file"), color = :green)
 
         # Display depending on results
         project_requested = replace(split(reponame, "/")[2], ".jl" => "") # strip out ".jl" if it exists
         if project_name == project_requested && project_version != version && project_version != "NA"
-            printstyled("$project_name $project_version activated, $version requested", color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m $project_name $project_version activated, $version requested"), color = :blue)
         elseif project_name != project_requested && project_name != "NA"
-            printstyled("Project name $project_name activated, $project_requested requested.", color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name $project_name activated, $project_requested requested."), color = :blue)
         else 
-            printstyled("Project name is $project_name, version is $project_version", color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name is $project_name, version is $project_version"), color = :blue)
         end
     end 
 
@@ -75,7 +75,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        printstyled("local TOML exists; removing now.\n", color = :blue)
+        printstyled(Markdown.pars("\e[1mInfo\e[0m Local TOML exists; removing now.\n"), color = :blue)
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 

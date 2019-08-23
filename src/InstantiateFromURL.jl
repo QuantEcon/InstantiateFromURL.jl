@@ -5,6 +5,7 @@ using Pkg, BinaryProvider, Suppressor
 using HTTP # for activate_github_path
 # TOML module
 import Pkg.TOML: parsefile
+using Markdown
 
 # Code
 include("activate.jl")
