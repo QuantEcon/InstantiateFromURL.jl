@@ -37,16 +37,18 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     url_manifest = (path == "") ? join(["https://raw.githubusercontent.com", reponame, url_version, "Manifest.toml"], "/") : join(["https://raw.githubusercontent.com", reponame, url_version, path, "Manifest.toml"], "/")
 
     # unified display for all cases
-    function displayproj()
+    function display_proj()
+        ctx = Pkg.Types.Context();
+        project_file = ctx.env.project_file;
+        printstyled(Markdown.parse("\e[1mActivated\e[0m $project_file"), color = :green)
+    end
+
+    function display_info()
         ctx = Pkg.Types.Context();
         project_information = parsefile(ctx.env.project_file);
-        project_file = ctx.env.project_file;
         project_version = haskey(project_information, "version") ? project_information["version"] : "NA"
         project_name = haskey(project_information, "name") ? project_information["name"] : "NA"
         
-        # Always display this 
-        printstyled(Markdown.parse("\e[1mActivated\e[0m $project_file"), color = :green)
-
         # Display depending on results
         project_requested = replace(split(reponame, "/")[2], ".jl" => "") # strip out ".jl" if it exists
         if project_name == project_requested && project_version != version && project_version != "NA"
@@ -61,7 +63,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     # use a local project if it exists and we don't have it set to force
     if !is_project_local && does_local_project_exist && !force
         Pkg.activate(pwd());
-        displayproj()
+        display_info()
         return 
     end 
 
@@ -69,7 +71,8 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     # this case catches most scenarios
     # NOTE: Need the third check in cases where we've deleted the project file after activating 
     if is_project_activated && !force && isfile(Base.active_project())
-        displayproj()
+        display_proj()
+        display_info()
         return 
     end 
 
@@ -94,6 +97,6 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     Pkg.activate(pwd())
     Pkg.instantiate()
     pkg"precompile"
-    displayproj()
+    display_info()
     return # return nothing
 end
