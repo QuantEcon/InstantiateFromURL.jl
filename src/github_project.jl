@@ -3,7 +3,7 @@
 # Without versions for now (so that we don't force downgrades, etc.)... can get version information easily enough, though.
 function packages_to_default_environment() # no arg, since it operates on the activated environment
     if (Base.active_project() == Base.load_path_expand("@v#.#"))
-        printstyled("No project activated.\n", color = :blue)
+        printstyled("No project activated.\n", color = :cyan)
         return 
     end
 
@@ -52,11 +52,11 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
         # Display depending on results
         project_requested = replace(split(reponame, "/")[2], ".jl" => "") # strip out ".jl" if it exists
         if project_name == project_requested && project_version != version && project_version != "NA"
-            printstyled(Markdown.parse("\e[1mInfo\e[0m $project_name $project_version activated, $version requested"), color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m $project_name $project_version activated, $version requested"), color = :cyan)
         elseif project_name != project_requested && project_name != "NA"
-            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name $project_name activated, $project_requested requested."), color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name $project_name activated, $project_requested requested."), color = :cyan)
         else 
-            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name is $project_name, version is $project_version"), color = :blue)
+            printstyled(Markdown.parse("\e[1mInfo\e[0m Project name is $project_name, version is $project_version"), color = :cyan)
         end
     end 
 
@@ -78,7 +78,7 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
 
     # at this point, need to do downloading/overwriting/etc.
     if does_local_project_exist 
-        printstyled(Markdown.parse("\e[1mInfo\e[0m Local TOML exists; removing now.\n"), color = :blue)
+        printstyled(Markdown.parse("\e[1mInfo\e[0m Local TOML exists; removing now.\n"), color = :cyan)
         rm(joinpath(pwd(), "Project.toml"), force = true) # force = true so non-existing path doesn't error
         rm(joinpath(pwd(), "Manifest.toml"), force = true)
     end 
