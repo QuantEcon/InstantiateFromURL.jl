@@ -23,7 +23,8 @@ The signature is:
 function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     path = "", # relative path within the repo (root by default)
     version = "master",
-    force = false)
+    force = false,
+    instantiate = false)
 ```
 
 Where: 
@@ -33,6 +34,8 @@ Where:
 * `version` refers to a specific version of the TOML, corresponding to a **github tag** of the `reponame` repo.
 
 * `force` decides whether or not we're comfortable using whatever project-specific IJulia finds (if there is any.) Essentially, **the `force` parameter decides whether to use a soft or hard match.**
+
+* `instantiate` decides whether or not to instantiate the project upon activation.
 
 The logic here is: 
 

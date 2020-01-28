@@ -20,7 +20,8 @@ end
 function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     path = "", # relative path within the repo (root by default)
     version = "master",
-    force = false)
+    force = false,
+    instantiate = false)
 
     #= summary variables for logic
         - is_project_activated = are we using a non-default project 
@@ -64,6 +65,9 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     if !is_project_local && does_local_project_exist && !force
         Pkg.activate(pwd());
         display_info()
+        if instantiate 
+            Pkg.instantiate()
+        end
         return 
     end 
 
@@ -73,6 +77,9 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     if is_project_activated && !force && isfile(Base.active_project())
         display_proj()
         display_info()
+        if instantiate 
+            Pkg.instantiate()
+        end 
         return 
     end 
 
