@@ -21,7 +21,8 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     path = "", # relative path within the repo (root by default)
     version = "master",
     force = false,
-    instantiate = false)
+    instantiate = false,
+    precompile = true)
 
     #= summary variables for logic
         - is_project_activated = are we using a non-default project 
@@ -103,7 +104,9 @@ function github_project(reponame; # e.g., "QuantEcon/quantecon-notebooks-jl"
     
     Pkg.activate(pwd())
     Pkg.instantiate()
-    pkg"precompile"
+    if precompile
+        pkg"precompile"
+    end
     display_info()
     return # return nothing
 end
