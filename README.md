@@ -1,7 +1,5 @@
 # InstantiateFromURL
 
-[![Build Status](https://travis-ci.com/QuantEcon/InstantiateFromURL.jl.svg?branch=master)](https://travis-ci.com/QuantEcon/InstantiateFromURL.jl)
-
 A way to bind dependency information to Julia assets without the need to pass around TOML files.
 
 The use case is that your notebooks would have something like the following in their first cell:
